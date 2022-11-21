@@ -20,5 +20,5 @@ func main(){
 	var c chan string = make(chan string)	
 	go HelloSender(c)
 	go HelloReceiver(c)
-	time.Sleep(1)
+	time.Sleep(2)
 }
