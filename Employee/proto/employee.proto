@@ -1,0 +1,138 @@
+syntax = "proto3";
+
+package proto;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/sbbhagate/GoCode/Employee/proto";
+
+message EmployeeId{
+	int32 Empid = 1;
+}
+
+message EmployeeFirstName{
+	string FirstName = 1;
+}
+
+message EmployeeLastName{
+	string LastName = 1;
+}
+
+message EmployeeDisplayName{
+	string DisplayName = 1;
+}
+
+message EmployeeAge{
+	int32 Age = 1;
+}
+
+message EmployeeSalary{
+	double Salary = 1;
+}
+
+message EmployeeDesignation{
+	string Designation = 1;
+}
+
+message EmployeeDepartment{
+	string Department = 1;
+}
+
+message Employee{
+	int32 EmpId = 1;
+	string FirstName = 2;
+	string LastName = 3;
+	string DisplayName = 4;
+	int32 Age = 5;
+	double Salary = 6;
+	string Designation = 7;
+	string Department = 8; 
+}
+
+message Employees{
+	repeated Employee emps = 1;
+}
+
+message UpdateEmployeeResponse{
+	string response = 1;
+}
+
+message DeleteEmployeeResponse{
+	string response = 1;
+}
+
+service EmployeeService{
+	rpc CreateEmployee(Employee) returns (EmployeeId){
+		option (google.api.http) = {
+			post: "/v1/createemp"
+			body: "*"
+		};		
+	}
+
+	rpc ReadEmployee(Employee) returns (Employees){
+		option (google.api.http) = {
+			get: "/v1/reademp"
+		};
+	}
+	
+	rpc ReadEmployeeById(EmployeeId) returns (Employees){
+		option (google.api.http) = {
+			get: "/v1/readempbyid/{Empid}"
+		};
+	}
+
+	rpc ReadEmployeeByFirstName(EmployeeFirstName) returns (Employees){
+		option (google.api.http) = {
+			get: "/v1/readempbyfirstname/{FirstName}"
+		};
+	}
+
+	rpc ReadEmployeeByLastName(EmployeeLastName) returns (Employees){
+		option (google.api.http) = {
+			get: "/v1/readempbylastname/{LastName}"
+		};
+	}
+
+	rpc ReadEmployeeByDisplayName(EmployeeDisplayName) returns (Employees){
+		option (google.api.http) = {
+			get: "/v1/readempbydisplayname/{DisplayName}"
+		};
+	}
+
+	rpc ReadEmployeeByAge(EmployeeAge) returns (Employees){
+		option (google.api.http) = {
+			get: "/v1/readempbyage/{Age}"
+		};
+	}
+
+	rpc ReadEmployeeBySalary(EmployeeSalary) returns (Employees){
+		option (google.api.http) = {
+			get: "/v1/readempbysalary/{Salary}"
+		};
+	}
+
+	rpc ReadEmployeeByDesignation(EmployeeDesignation) returns (Employees){
+		option (google.api.http) = {
+			get: "/v1/readempbydesignation/{Designation}"
+		};
+	}
+
+	rpc ReadEmployeeByDepartment(EmployeeDepartment) returns (Employees){
+		option (google.api.http) = {
+			get: "/v1/readempbydepartment/{Department}"
+		};
+	}
+
+	rpc UpdateEmployee(Employee) returns (UpdateEmployeeResponse){
+		option (google.api.http) = {
+			put: "/v1/updateemp/{EmpId}"
+			body: "*"
+		};
+	}
+
+	rpc DeleteEmployee(EmployeeId) returns (DeleteEmployeeResponse){
+		option (google.api.http) = {
+			delete: "/v1/deleteemp/{Empid}"
+		};
+	}
+}
