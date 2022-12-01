@@ -130,6 +130,13 @@ service EmployeeService{
 		};
 	}
 
+	rpc PatchEmployee(Employee) returns (UpdateEmployeeResponse){
+		option (google.api.http) = {
+			patch: "/v1/patchemp/{EmpId}"
+			body: "*"
+		};
+	}
+
 	rpc DeleteEmployee(EmployeeId) returns (DeleteEmployeeResponse){
 		option (google.api.http) = {
 			delete: "/v1/deleteemp/{Empid}"

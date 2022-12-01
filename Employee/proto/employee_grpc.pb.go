@@ -33,6 +33,7 @@ type EmployeeServiceClient interface {
 	ReadEmployeeByDesignation(ctx context.Context, in *EmployeeDesignation, opts ...grpc.CallOption) (*Employees, error)
 	ReadEmployeeByDepartment(ctx context.Context, in *EmployeeDepartment, opts ...grpc.CallOption) (*Employees, error)
 	UpdateEmployee(ctx context.Context, in *Employee, opts ...grpc.CallOption) (*UpdateEmployeeResponse, error)
+	PatchEmployee(ctx context.Context, in *Employee, opts ...grpc.CallOption) (*UpdateEmployeeResponse, error)
 	DeleteEmployee(ctx context.Context, in *EmployeeId, opts ...grpc.CallOption) (*DeleteEmployeeResponse, error)
 }
 
@@ -143,6 +144,15 @@ func (c *employeeServiceClient) UpdateEmployee(ctx context.Context, in *Employee
 	return out, nil
 }
 
+func (c *employeeServiceClient) PatchEmployee(ctx context.Context, in *Employee, opts ...grpc.CallOption) (*UpdateEmployeeResponse, error) {
+	out := new(UpdateEmployeeResponse)
+	err := c.cc.Invoke(ctx, "/proto.EmployeeService/PatchEmployee", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *employeeServiceClient) DeleteEmployee(ctx context.Context, in *EmployeeId, opts ...grpc.CallOption) (*DeleteEmployeeResponse, error) {
 	out := new(DeleteEmployeeResponse)
 	err := c.cc.Invoke(ctx, "/proto.EmployeeService/DeleteEmployee", in, out, opts...)
@@ -167,6 +177,7 @@ type EmployeeServiceServer interface {
 	ReadEmployeeByDesignation(context.Context, *EmployeeDesignation) (*Employees, error)
 	ReadEmployeeByDepartment(context.Context, *EmployeeDepartment) (*Employees, error)
 	UpdateEmployee(context.Context, *Employee) (*UpdateEmployeeResponse, error)
+	PatchEmployee(context.Context, *Employee) (*UpdateEmployeeResponse, error)
 	DeleteEmployee(context.Context, *EmployeeId) (*DeleteEmployeeResponse, error)
 	mustEmbedUnimplementedEmployeeServiceServer()
 }
@@ -207,6 +218,9 @@ func (UnimplementedEmployeeServiceServer) ReadEmployeeByDepartment(context.Conte
 }
 func (UnimplementedEmployeeServiceServer) UpdateEmployee(context.Context, *Employee) (*UpdateEmployeeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateEmployee not implemented")
+}
+func (UnimplementedEmployeeServiceServer) PatchEmployee(context.Context, *Employee) (*UpdateEmployeeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchEmployee not implemented")
 }
 func (UnimplementedEmployeeServiceServer) DeleteEmployee(context.Context, *EmployeeId) (*DeleteEmployeeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteEmployee not implemented")
@@ -422,6 +436,24 @@ func _EmployeeService_UpdateEmployee_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EmployeeService_PatchEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Employee)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).PatchEmployee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.EmployeeService/PatchEmployee",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).PatchEmployee(ctx, req.(*Employee))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _EmployeeService_DeleteEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(EmployeeId)
 	if err := dec(in); err != nil {
@@ -490,6 +522,10 @@ var EmployeeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateEmployee",
 			Handler:    _EmployeeService_UpdateEmployee_Handler,
+		},
+		{
+			MethodName: "PatchEmployee",
+			Handler:    _EmployeeService_PatchEmployee_Handler,
 		},
 		{
 			MethodName: "DeleteEmployee",
