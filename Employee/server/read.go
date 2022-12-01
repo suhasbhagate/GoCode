@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"strconv"
+
 	pb "github.com/sbbhagate/GoCode/Employee/proto"
 	"go.mongodb.org/mongo-driver/bson"
 	"google.golang.org/grpc/codes"
@@ -12,13 +14,17 @@ import (
 
 
 func (s *Server) ReadEmployee(ctx context.Context, in *pb.Employee) (*pb.Employees, error) {
-	log.Printf("ReadEmployeeById is invoked with %v\n", in)
+	log.Printf("ReadEmployee is invoked with %v\n", in)
 
 	CreateMatView(ctx)
 
 	var ppln bson.A
 	var docFilters bson.A
-		if in.EmpId > 0{
+
+	if in.EmpId<=0 && in.FirstName=="" && in.LastName=="" && in.DisplayName=="" && in.Department=="" && in.Designation=="" && in.Salary<=0 && in.Age<=0{
+		fmt.Println("Enter atleast one Query Parameter")
+	} else {
+	if in.EmpId > 0{
 		docFilters = append(docFilters, bson.D{{Key: "text",Value: bson.D{{Key: "query", Value: strconv.Itoa(int(in.EmpId))},{Key: "path",Value: "empid"}}}})
 	}
 	if in.FirstName !=""{
@@ -72,4 +78,6 @@ func (s *Server) ReadEmployee(ctx context.Context, in *pb.Employee) (*pb.Employe
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 	return emplist, nil
+	}
+	return nil,nil
 }
