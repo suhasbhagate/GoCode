@@ -2,22 +2,23 @@ package main
 
 import (
 	"context"
-	"log"
-
+	"fmt"
 	pb "github.com/sbbhagate/GoCode/Employee/proto"
+	sng "github.com/sbbhagate/GoCode/Employee/singleton"
 	"go.mongodb.org/mongo-driver/bson"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 func (s *Server) ReadEmployeeByLastName(ctx context.Context, in *pb.EmployeeLastName) (*pb.Employees, error) {
-	log.Printf("ReadEmployeeByLastName is invoked with %v\n", in)
+	str := fmt.Sprintf("ReadEmployeeByLastName is invoked with %v\n", in)
+	sng.SngService.Debug(str)
 
-	pipeline, err := collection.Aggregate(ctx, bson.A{
+	pipeline, err := sng.MongoService.Collection.Aggregate(ctx, bson.A{
 		bson.D{{Key: "$match", Value: bson.D{{Key: "lastname", Value: in.LastName}}}},
 	})
 	if err != nil {
-		log.Fatal(err)
+		sng.SngService.Fatal("Error while searching data")
 	}
 
 	defer pipeline.Close(ctx)
@@ -29,6 +30,7 @@ func (s *Server) ReadEmployeeByLastName(ctx context.Context, in *pb.EmployeeLast
 		err := pipeline.Decode(data)
 
 		if err != nil {
+			sng.SngService.Error("Error while retrieving data")
 			return nil, status.Errorf(
 				codes.NotFound,
 				err.Error(),
@@ -37,6 +39,7 @@ func (s *Server) ReadEmployeeByLastName(ctx context.Context, in *pb.EmployeeLast
 		emplist.Emps = append(emplist.Emps, documentToEmployee(data))
 	}
 	if err := pipeline.Err(); err != nil {
+		sng.SngService.Error("Error while retrieving data")
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 	return emplist, nil

@@ -2,14 +2,12 @@ package main
 
 import (
 	"context"
-	"log"
-
+	sng "github.com/sbbhagate/GoCode/Employee/singleton"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
 func CreateMatView(ctx context.Context) {
-
-	pipeln, err := collection.Aggregate(ctx,
+	pipeln, err := sng.MongoService.Collection.Aggregate(ctx,
 		bson.A{
 			bson.D{
 				{Key: "$project",
@@ -35,7 +33,7 @@ func CreateMatView(ctx context.Context) {
 			},
 		})
 	if err != nil {
-		log.Fatal(err)
+		sng.SngService.Fatal("Error while creating Materialized View")
 	}
 
 	defer pipeln.Close(ctx)

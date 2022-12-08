@@ -2,69 +2,73 @@ package main
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"net"
 	"net/http"
-
+	"os"
+	"github.com/joho/godotenv"
 	pb "github.com/sbbhagate/GoCode/Employee/proto"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"google.golang.org/grpc"
+	sng "github.com/sbbhagate/GoCode/Employee/singleton"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"go.uber.org/zap"
+	"google.golang.org/grpc"
 )
 
-var collection *mongo.Collection
-var collection1 *mongo.Collection
-var grpcaddr string = "0.0.0.0:50052"
-var httpaddr string = "0.0.0.0:50051"
+var grpcaddr string
+var httpaddr string
 
 type Server struct {
 	pb.EmployeeServiceServer
 }
 
-func main() {
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://m001-student:m001password@sandbox.lsj2y.mongodb.net/test"))
+func init(){
+	err := godotenv.Load("local.env")
+    if err != nil {
+        sng.SngService.Fatal("Error loading .env file")
+    }
+}
 
-	if err != nil {
-		log.Fatal(err)
-	}
+func main() {	
+	
+	grpcaddr = os.Getenv("GRPCADDR")
+	httpaddr = os.Getenv("HTTPADDR")
 
-	err = client.Connect(context.Background())
-	if err != nil {
-		log.Fatal(err)
-	}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
-	collection = client.Database("EmployeeDB").Collection("Employee")
-	collection1 = client.Database("EmployeeDB").Collection("emp_mat_view")
-	//RunGRPCServer()
-	RunGatewayServer()
+	sng.InitSingletonLogger(ctx)
+	defer sng.SngService.Sync()
+	
+	sng.SngService.Debug("Employee Service API Started")
+	sng.InitMongoDB(ctx)
+
+	defer sng.MongoService.DisconnectMongoDB(ctx)
+
+	RunGatewayServer(ctx)
 }
 
 func RunGRPCServer() {
 	lis, err := net.Listen("tcp", grpcaddr)
 	if err != nil {
-		log.Fatalf("Failed to listen on: %v\n", err)
+		sng.SngService.Fatal("Failed to listen on: %v\n", zap.Error(err))
 	}
 
-	log.Printf("Listening on %s\n", grpcaddr)
+	sng.SngService.Debug("Listening on ", zap.String(" %s\n", grpcaddr))
 
 	s := grpc.NewServer()
 	pb.RegisterEmployeeServiceServer(s, &Server{})
 
 	if err = s.Serve(lis); err != nil {
-		log.Fatalf("Failded to serve: %v \n", err)
+		sng.SngService.Fatal("Failded to serve: %v \n", zap.Error(err))
 	}
 }
 
-func RunGatewayServer() {
+func RunGatewayServer(ctx context.Context) {
 	grpcMux := runtime.NewServeMux()
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
 
 	err := pb.RegisterEmployeeServiceHandlerServer(ctx, grpcMux, &Server{})
 	if err != nil {
-		log.Fatal("Cannot register handler server:", err)
+		sng.SngService.Fatal("Cannot register handler server:", zap.Error(err))
 	}
 
 	mux := http.NewServeMux()
@@ -72,13 +76,14 @@ func RunGatewayServer() {
 
 	lis, err := net.Listen("tcp", httpaddr)
 	if err != nil {
-		log.Fatalf("Failed to listen on: %v\n", err)
+		sng.SngService.Fatal("Failed to listen on: %v\n", zap.Error(err))
 	}
 
-	log.Printf("HTTP GateWay Server started at %s\n", httpaddr)
+	str := fmt.Sprintf("HTTP GateWay Server started at %s \n",httpaddr)
+	sng.SngService.Debug(str)
 
 	err = http.Serve(lis, mux)
 	if err != nil {
-		log.Fatalf("Failded to start HTTP Gateway Server: %v \n", err)
+		sng.SngService.Fatal("Failded to start HTTP Gateway Server: %v \n", zap.Error(err))
 	}
 }

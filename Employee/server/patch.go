@@ -2,23 +2,25 @@ package main
 
 import (
 	"context"
-	"log"
-
+	"fmt"
 	pb "github.com/sbbhagate/GoCode/Employee/proto"
+	sng "github.com/sbbhagate/GoCode/Employee/singleton"
 	"go.mongodb.org/mongo-driver/bson"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.UpdateEmployeeResponse, error) {
-	log.Printf("PatchEmployee was invoked with %v\n", in)
+	str := fmt.Sprintf("PatchEmployee was invoked with %v\n", in)
+	sng.SngService.Debug(str)
 
 	data := &Emp{}
 	filter := bson.M{"empid": in.EmpId}
 
-	res := collection.FindOne(ctx, filter)
+	res := sng.MongoService.Collection.FindOne(ctx, filter)
 
 	if err := res.Decode(data); err !=nil{
+		sng.SngService.Error("Cannot find Record with the Employee ID provided")
 		return nil, status.Errorf(
 			codes.NotFound,
 			"Cannot find Record with the Employee ID provided",
@@ -30,6 +32,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	var fnm string
 	if in.FirstName !=""{
 		fnm = in.FirstName
+		sng.SngService.Info("First Name Updated")
 	} else {
 		fnm = ret.FirstName
 	}
@@ -37,6 +40,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	var lnm string
 	if in.LastName !=""{
 		lnm = in.LastName
+		sng.SngService.Info("Last Name Updated")
 	} else {
 		lnm = ret.LastName
 	}
@@ -44,6 +48,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	var dsnm string
 	if in.DisplayName !=""{
 		dsnm = in.DisplayName
+		sng.SngService.Info("Display Name Updated")
 	} else {
 		dsnm = ret.DisplayName
 	}
@@ -51,6 +56,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	var des string
 	if in.Designation !=""{
 		des = in.Designation
+		sng.SngService.Info("Designation Updated")
 	} else {
 		des = ret.Designation
 	}
@@ -58,6 +64,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	var dpt string
 	if in.Department !=""{
 		dpt = in.Department
+		sng.SngService.Info("Department Updated")
 	} else {
 		dpt = ret.Department
 	}
@@ -66,6 +73,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 
 	if in.Age > 0{
 		ag = in.Age
+		sng.SngService.Info("Age Updated")
 	} else {
 		ag = ret.Age
 	}
@@ -73,6 +81,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	var sl float64
 	if in.Salary > 0{
 		sl = in.Salary
+		sng.SngService.Info("Salary Updated")
 	} else {
 		sl = ret.Salary
 	}
@@ -88,13 +97,14 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 		Department:  dpt,
 	}
 
-	res1, err1 := collection.UpdateOne(
+	res1, err1 := sng.MongoService.Collection.UpdateOne(
 		ctx,
 		bson.M{"empid": in.EmpId},
 		bson.M{"$set": data1},
 	)
 
 	if err1 != nil {
+		sng.SngService.Error("Could not update record")
 		return nil, status.Errorf(
 			codes.Internal,
 			"Could not update",
@@ -102,6 +112,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	}
 
 	if res1.MatchedCount == 0 {
+		sng.SngService.Error("Cannot find Employee with given Id")
 		return nil, status.Errorf(
 			codes.NotFound,
 			"Cannot find Employee with given Id",

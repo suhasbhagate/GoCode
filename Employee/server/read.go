@@ -3,10 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 	"strconv"
-
 	pb "github.com/sbbhagate/GoCode/Employee/proto"
+	sng "github.com/sbbhagate/GoCode/Employee/singleton"
 	"go.mongodb.org/mongo-driver/bson"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -14,7 +13,8 @@ import (
 
 
 func (s *Server) ReadEmployee(ctx context.Context, in *pb.Employee) (*pb.Employees, error) {
-	log.Printf("ReadEmployee is invoked with %v\n", in)
+	str := fmt.Sprintf("ReadEmployee is invoked with %v\n", in)
+	sng.SngService.Debug(str)
 
 	CreateMatView(ctx)
 
@@ -22,7 +22,7 @@ func (s *Server) ReadEmployee(ctx context.Context, in *pb.Employee) (*pb.Employe
 	var docFilters bson.A
 
 	if in.EmpId<=0 && in.FirstName=="" && in.LastName=="" && in.DisplayName=="" && in.Department=="" && in.Designation=="" && in.Salary<=0 && in.Age<=0{
-		fmt.Println("Enter atleast one Query Parameter")
+		sng.SngService.Warn("No Query Parameter is Entered, Please Enter atleast one Query Parameter")
 	} else {
 	if in.EmpId > 0{
 		docFilters = append(docFilters, bson.D{{Key: "text",Value: bson.D{{Key: "query", Value: strconv.Itoa(int(in.EmpId))},{Key: "path",Value: "empid"}}}})
@@ -53,9 +53,9 @@ func (s *Server) ReadEmployee(ctx context.Context, in *pb.Employee) (*pb.Employe
 
 	ppln = append(ppln, bson.D{{Key: "$search",Value: bson.D{{Key: "index",Value: "EmployeeIndex"},{Key: "compound",Value: compound}}}})
 	
-	pipeline, err := collection1.Aggregate(ctx,ppln)
+	pipeline, err := sng.MongoService.MatView.Aggregate(ctx,ppln)
 	if err != nil {
-		log.Fatal(err)
+		sng.SngService.Fatal("Error while searching data")
 	}
 
 	defer pipeline.Close(ctx)
@@ -67,6 +67,7 @@ func (s *Server) ReadEmployee(ctx context.Context, in *pb.Employee) (*pb.Employe
 		err := pipeline.Decode(data)
 
 		if err != nil {
+			sng.SngService.Error("Error while retrieving data")
 			return nil, status.Errorf(
 				codes.NotFound,
 				err.Error(),
@@ -75,6 +76,7 @@ func (s *Server) ReadEmployee(ctx context.Context, in *pb.Employee) (*pb.Employe
 		emplist.Emps = append(emplist.Emps, documentToEmployee1(data))
 	}
 	if err := pipeline.Err(); err != nil {
+		sng.SngService.Error("Error while retrieving data")
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 	return emplist, nil

@@ -1,0 +1,3 @@
+{"level":"info","ts":"2022-12-06T12:02:15.470+0530","caller":"LoggingToBothConsoleAndLogFile/loggingtobothconsoleandlogfile.go:14","msg":"INFO log level message"}
+{"level":"warn","ts":"2022-12-06T12:02:15.471+0530","caller":"LoggingToBothConsoleAndLogFile/loggingtobothconsoleandlogfile.go:15","msg":"Warn log level message"}
+{"level":"error","ts":"2022-12-06T12:02:15.471+0530","caller":"LoggingToBothConsoleAndLogFile/loggingtobothconsoleandlogfile.go:16","msg":"Error log level message","stacktrace":"main.main\n\tD:/GoCode/Logger/LoggingToBothConsoleAndLogFile/loggingtobothconsoleandlogfile.go:16\nruntime.main\n\tC:/Program Files/Go/src/runtime/proc.go:250"}

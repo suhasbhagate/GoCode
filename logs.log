@@ -1,0 +1,4 @@
+{"level":"debug","ts":"2022-12-08T15:20:25.419+0530","caller":"singleton/singleton.go:99","msg":"Employee Service API Started"}
+{"level":"info","ts":"2022-12-08T15:20:25.856+0530","caller":"singleton/singleton.go:83","msg":"MongoDB Client created successfully"}
+{"level":"info","ts":"2022-12-08T15:20:25.857+0530","caller":"singleton/singleton.go:83","msg":"Connection to MongoDB is successful"}
+{"level":"debug","ts":"2022-12-08T15:20:25.862+0530","caller":"singleton/singleton.go:99","msg":"HTTP GateWay Server started at 0.0.0.0:5051 \n"}

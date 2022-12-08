@@ -2,16 +2,17 @@ package main
 
 import (
 	"context"
-	"log"
-
+	"fmt"
 	pb "github.com/sbbhagate/GoCode/Employee/proto"
+	sng "github.com/sbbhagate/GoCode/Employee/singleton"
 	"go.mongodb.org/mongo-driver/bson"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 func (s *Server) UpdateEmployee(ctx context.Context, in *pb.Employee) (*pb.UpdateEmployeeResponse, error) {
-	log.Printf("UpdateEmployee was invoked with %v\n", in)
+	str := fmt.Sprintf("UpdateEmployee was invoked with %v\n", in)
+	sng.SngService.Debug(str)
 
 	data := Emp{
 		EmpId:       in.EmpId,
@@ -24,13 +25,14 @@ func (s *Server) UpdateEmployee(ctx context.Context, in *pb.Employee) (*pb.Updat
 		Department:  in.Department,
 	}
 
-	res, err := collection.UpdateOne(
+	res, err := sng.MongoService.Collection.UpdateOne(
 		ctx,
 		bson.M{"empid": in.EmpId},
 		bson.M{"$set": data},
 	)
 
 	if err != nil {
+		sng.SngService.Error("Could not update")
 		return nil, status.Errorf(
 			codes.Internal,
 			"Could not update",
@@ -38,6 +40,7 @@ func (s *Server) UpdateEmployee(ctx context.Context, in *pb.Employee) (*pb.Updat
 	}
 
 	if res.MatchedCount == 0 {
+		sng.SngService.Error("Cannot find Employee with given Id")
 		return nil, status.Errorf(
 			codes.NotFound,
 			"Cannot find Employee with given Id",
