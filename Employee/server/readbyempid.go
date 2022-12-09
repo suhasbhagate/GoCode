@@ -14,7 +14,7 @@ import (
 
 func (s *Server) ReadEmployeeById(ctx context.Context, in *pb.EmployeeId) (*pb.Employees, error) {
 	str := fmt.Sprintf("ReadEmployeeById is invoked with %v\n", in)
-	sng.SngService.Debug(str)
+	sng.DebugLogger.Debug(ctx, str, data)
 
 	pipeline, err := sng.MongoService.MatView.Aggregate(ctx, 
 						bson.A{
@@ -34,7 +34,7 @@ func (s *Server) ReadEmployeeById(ctx context.Context, in *pb.EmployeeId) (*pb.E
 						})
 
 	if err != nil {
-		sng.SngService.Fatal("Error while searching data")
+		sng.FatalLogger.Fatal(ctx,err,"Error while searching data",data)
 	}
 
 	defer pipeline.Close(ctx)
@@ -46,7 +46,7 @@ func (s *Server) ReadEmployeeById(ctx context.Context, in *pb.EmployeeId) (*pb.E
 		err := pipeline.Decode(data)
 
 		if err != nil {
-			sng.SngService.Error("Error while retrieving data")
+			sng.ErrorLogger.Error(ctx,err,"Error while retrieving data",data)
 			return nil, status.Errorf(
 				codes.NotFound,
 				err.Error(),
@@ -55,7 +55,7 @@ func (s *Server) ReadEmployeeById(ctx context.Context, in *pb.EmployeeId) (*pb.E
 		emplist.Emps = append(emplist.Emps, documentToEmployee1(data))
 	}
 	if err := pipeline.Err(); err != nil {
-		sng.SngService.Error("Error while retrieving data")
+		sng.ErrorLogger.Error(ctx,err,"Error while retrieving data",data)
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 	return emplist, nil

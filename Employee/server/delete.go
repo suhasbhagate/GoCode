@@ -13,7 +13,7 @@ import (
 
 func (s *Server) DeleteEmployee(ctx context.Context, in *pb.EmployeeId) (*pb.DeleteEmployeeResponse, error) {
 	str := fmt.Sprintf("DeleteEmployee was invoked with %v\n", in)
-	sng.SngService.Debug(str)
+	sng.DebugLogger.Debug(ctx, str, data)
 
 	res, err := sng.MongoService.Collection.DeleteOne(
 		ctx,
@@ -21,7 +21,8 @@ func (s *Server) DeleteEmployee(ctx context.Context, in *pb.EmployeeId) (*pb.Del
 	)
 
 	if err != nil {
-		sng.SngService.Error("Cannot Delete Record in MongoDB")
+		sng.ErrorLogger.Error(ctx,err,"Cannot Delete Record in MongoDB",data)
+
 		return nil, status.Errorf(
 			codes.Internal,
 			fmt.Sprintf("Cannot Delete Record in MongoDB %v\n", err),
@@ -29,7 +30,8 @@ func (s *Server) DeleteEmployee(ctx context.Context, in *pb.EmployeeId) (*pb.Del
 	}
 
 	if res.DeletedCount == 0 {
-		sng.SngService.Error("Cannot Find Record with given EmployeeId")
+		sng.ErrorLogger.Error(ctx,err,"Cannot Find Record with given EmployeeId",data)
+
 		return nil, status.Errorf(
 			codes.NotFound,
 			"Cannot Find Record with given EmployeeId",
@@ -42,7 +44,8 @@ func (s *Server) DeleteEmployee(ctx context.Context, in *pb.EmployeeId) (*pb.Del
 	)
 
 	if err != nil {
-		sng.SngService.Error("Cannot Delete Record in MongoDB")
+		sng.ErrorLogger.Error(ctx,err,"Cannot Delete Record in MongoDB",data)
+
 		return nil, status.Errorf(
 			codes.Internal,
 			fmt.Sprintf("Cannot Delete Record in MongoDB %v\n", err),
@@ -50,7 +53,8 @@ func (s *Server) DeleteEmployee(ctx context.Context, in *pb.EmployeeId) (*pb.Del
 	}
 
 	if res1.DeletedCount == 0 {
-		sng.SngService.Error("Cannot Find Record with given EmployeeId")
+		sng.ErrorLogger.Error(ctx,err,"Cannot Find Record with given EmployeeId",data)
+
 		return nil, status.Errorf(
 			codes.NotFound,
 			"Cannot Find Record with given EmployeeId",

@@ -12,7 +12,7 @@ import (
 
 func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.UpdateEmployeeResponse, error) {
 	str := fmt.Sprintf("PatchEmployee was invoked with %v\n", in)
-	sng.SngService.Debug(str)
+	sng.DebugLogger.Debug(ctx, str, data)
 
 	data := &Emp{}
 	filter := bson.M{"empid": in.EmpId}
@@ -20,7 +20,8 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	res := sng.MongoService.Collection.FindOne(ctx, filter)
 
 	if err := res.Decode(data); err !=nil{
-		sng.SngService.Error("Cannot find Record with the Employee ID provided")
+		sng.ErrorLogger.Error(ctx,err,"Cannot find Record with the Employee ID provided",data)
+
 		return nil, status.Errorf(
 			codes.NotFound,
 			"Cannot find Record with the Employee ID provided",
@@ -32,7 +33,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	var fnm string
 	if in.FirstName !=""{
 		fnm = in.FirstName
-		sng.SngService.Info("First Name Updated")
+		sng.InfoLogger.Info(ctx, "First Name Updated", data)
 	} else {
 		fnm = ret.FirstName
 	}
@@ -40,7 +41,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	var lnm string
 	if in.LastName !=""{
 		lnm = in.LastName
-		sng.SngService.Info("Last Name Updated")
+		sng.InfoLogger.Info(ctx, "Last Name Updated", data)
 	} else {
 		lnm = ret.LastName
 	}
@@ -48,7 +49,8 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	var dsnm string
 	if in.DisplayName !=""{
 		dsnm = in.DisplayName
-		sng.SngService.Info("Display Name Updated")
+		sng.InfoLogger.Info(ctx, "Display Name Updated", data)
+		
 	} else {
 		dsnm = ret.DisplayName
 	}
@@ -56,7 +58,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	var des string
 	if in.Designation !=""{
 		des = in.Designation
-		sng.SngService.Info("Designation Updated")
+		sng.InfoLogger.Info(ctx, "Designation Updated", data)
 	} else {
 		des = ret.Designation
 	}
@@ -64,7 +66,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	var dpt string
 	if in.Department !=""{
 		dpt = in.Department
-		sng.SngService.Info("Department Updated")
+		sng.InfoLogger.Info(ctx, "Department Updated", data)
 	} else {
 		dpt = ret.Department
 	}
@@ -73,7 +75,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 
 	if in.Age > 0{
 		ag = in.Age
-		sng.SngService.Info("Age Updated")
+		sng.InfoLogger.Info(ctx, "Age Updated", data)
 	} else {
 		ag = ret.Age
 	}
@@ -81,7 +83,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	var sl float64
 	if in.Salary > 0{
 		sl = in.Salary
-		sng.SngService.Info("Salary Updated")
+		sng.InfoLogger.Info(ctx, "Salary Updated", data)
 	} else {
 		sl = ret.Salary
 	}
@@ -104,7 +106,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	)
 
 	if err1 != nil {
-		sng.SngService.Error("Could not update record")
+		sng.ErrorLogger.Error(ctx,err1,"Could not update record",data)
 		return nil, status.Errorf(
 			codes.Internal,
 			"Could not update",
@@ -112,7 +114,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	}
 
 	if res1.MatchedCount == 0 {
-		sng.SngService.Error("Cannot find Employee with given Id")
+		sng.ErrorLogger.Error(ctx,err1,"Cannot find Employee with given Id",data)
 		return nil, status.Errorf(
 			codes.NotFound,
 			"Cannot find Employee with given Id",

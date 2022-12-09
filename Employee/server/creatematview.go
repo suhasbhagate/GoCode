@@ -33,7 +33,7 @@ func CreateMatView(ctx context.Context) {
 			},
 		})
 	if err != nil {
-		sng.SngService.Fatal("Error while creating Materialized View")
+		sng.FatalLogger.Fatal(ctx,err,"Error while creating Materialized View",data)
 	}
 
 	defer pipeln.Close(ctx)

@@ -2,3 +2,41 @@
 {"level":"info","ts":"2022-12-08T15:20:25.856+0530","caller":"singleton/singleton.go:83","msg":"MongoDB Client created successfully"}
 {"level":"info","ts":"2022-12-08T15:20:25.857+0530","caller":"singleton/singleton.go:83","msg":"Connection to MongoDB is successful"}
 {"level":"debug","ts":"2022-12-08T15:20:25.862+0530","caller":"singleton/singleton.go:99","msg":"HTTP GateWay Server started at 0.0.0.0:5051 \n"}
+{"level":"debug","ts":"2022-12-08T15:31:50.775+0530","caller":"singleton/singleton.go:99","msg":"Employee Service API Started"}
+{"level":"info","ts":"2022-12-08T15:31:53.385+0530","caller":"singleton/singleton.go:83","msg":"MongoDB Client created successfully"}
+{"level":"info","ts":"2022-12-08T15:31:53.386+0530","caller":"singleton/singleton.go:83","msg":"Connection to MongoDB is successful"}
+{"level":"debug","ts":"2022-12-08T15:31:53.390+0530","caller":"singleton/singleton.go:99","msg":"HTTP GateWay Server started at 0.0.0.0:5051 \n"}
+{"level":"debug","ts":"2022-12-08T15:32:30.344+0530","caller":"singleton/singleton.go:99","msg":"CreateEmployee was invoked with EmpId:198  FirstName:\"Saksham\"  LastName:\"Bhagate\"  DisplayName:\"Saksham Bhagate\"  Age:22  Salary:60000  Designation:\"Software Developer\"  Department:\"TTH\"\n"}
+{"level":"debug","ts":"2022-12-08T15:32:49.264+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployee is invoked with \n"}
+{"level":"warn","ts":"2022-12-08T15:32:49.505+0530","caller":"singleton/singleton.go:87","msg":"No Query Parameter is Entered, Please Enter atleast one Query Parameter"}
+{"level":"debug","ts":"2022-12-08T15:32:59.678+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployee is invoked with EmpId:198\n"}
+{"level":"debug","ts":"2022-12-08T15:33:38.961+0530","caller":"singleton/singleton.go:99","msg":"PatchEmployee was invoked with EmpId:198  Age:40  Salary:70000  Designation:\"Technical Lead\"  Department:\"TTH\"\n"}
+{"level":"info","ts":"2022-12-08T15:33:39.202+0530","caller":"singleton/singleton.go:83","msg":"Designation Updated"}
+{"level":"info","ts":"2022-12-08T15:33:39.203+0530","caller":"singleton/singleton.go:83","msg":"Department Updated"}
+{"level":"info","ts":"2022-12-08T15:33:39.203+0530","caller":"singleton/singleton.go:83","msg":"Age Updated"}
+{"level":"info","ts":"2022-12-08T15:33:39.204+0530","caller":"singleton/singleton.go:83","msg":"Salary Updated"}
+{"level":"debug","ts":"2022-12-08T15:33:52.237+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployee is invoked with \n"}
+{"level":"warn","ts":"2022-12-08T15:33:52.468+0530","caller":"singleton/singleton.go:87","msg":"No Query Parameter is Entered, Please Enter atleast one Query Parameter"}
+{"level":"debug","ts":"2022-12-08T15:34:08.218+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployee is invoked with EmpId:198\n"}
+{"level":"debug","ts":"2022-12-08T15:34:45.512+0530","caller":"singleton/singleton.go:99","msg":"UpdateEmployee was invoked with EmpId:198  FirstName:\"Suhas\"  LastName:\"Bhagate\"  DisplayName:\"Suhas Bhagate\"  Age:42  Salary:60000  Designation:\"Software Developer\"  Department:\"RCM\"\n"}
+{"level":"debug","ts":"2022-12-08T15:34:57.428+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployee is invoked with \n"}
+{"level":"warn","ts":"2022-12-08T15:34:57.681+0530","caller":"singleton/singleton.go:87","msg":"No Query Parameter is Entered, Please Enter atleast one Query Parameter"}
+{"level":"debug","ts":"2022-12-08T15:35:08.078+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployee is invoked with EmpId:198\n"}
+{"level":"debug","ts":"2022-12-08T15:35:31.898+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployeeById is invoked with Empid:198\n"}
+{"level":"debug","ts":"2022-12-08T15:35:41.461+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployeeByFirstName is invoked with FirstName:\"Suhas\"\n"}
+{"level":"debug","ts":"2022-12-08T15:35:53.937+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployeeByLastName is invoked with LastName:\"Bhagate\"\n"}
+{"level":"debug","ts":"2022-12-08T15:36:05.159+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployeeByDisplatName is invoked with DisplayName:\"Saksham Suhas Bhagate\"\n"}
+{"level":"debug","ts":"2022-12-08T15:36:21.906+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployeeByAge is invoked with Age:40\n"}
+{"level":"debug","ts":"2022-12-08T15:36:26.194+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployeeByAge is invoked with Age:42\n"}
+{"level":"debug","ts":"2022-12-08T15:36:48.900+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployeeBySalary is invoked with Salary:70000\n"}
+{"level":"debug","ts":"2022-12-08T15:37:06.370+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployeeBySalary is invoked with Salary:60000\n"}
+{"level":"debug","ts":"2022-12-08T15:37:22.813+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployeeByDesignation is invoked with Designation:\"Technical Lead\"\n"}
+{"level":"debug","ts":"2022-12-08T15:37:34.839+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployeeByDesignation is invoked with Designation:\"Software Developer\"\n"}
+{"level":"debug","ts":"2022-12-08T15:37:50.858+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployeeByDepartment is invoked with Department:\"TTH\"\n"}
+{"level":"debug","ts":"2022-12-08T15:37:58.294+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployeeByDepartment is invoked with Department:\"RCM\"\n"}
+{"level":"debug","ts":"2022-12-08T15:38:16.160+0530","caller":"singleton/singleton.go:99","msg":"DeleteEmployee was invoked with Empid:198\n"}
+{"level":"debug","ts":"2022-12-08T15:38:25.878+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployee is invoked with \n"}
+{"level":"warn","ts":"2022-12-08T15:38:26.123+0530","caller":"singleton/singleton.go:87","msg":"No Query Parameter is Entered, Please Enter atleast one Query Parameter"}
+{"level":"debug","ts":"2022-12-08T15:38:43.438+0530","caller":"singleton/singleton.go:99","msg":"ReadEmployee is invoked with EmpId:198\n"}
+{"level":"debug","ts":"2022-12-08T15:39:00.325+0530","caller":"singleton/singleton.go:99","msg":"DeleteEmployee was invoked with Empid:198\n"}
+{"level":"error","ts":"2022-12-08T15:39:00.549+0530","caller":"singleton/singleton.go:91","msg":"Cannot Find Record with given EmployeeId","stacktrace":"github.com/sbbhagate/GoCode/Employee/singleton.(*SingletonLogger).Error\n\tD:/GoCode/Employee/singleton/singleton.go:91\nmain.(*Server).DeleteEmployee\n\tD:/GoCode/Employee/server/delete.go:32\ngithub.com/sbbhagate/GoCode/Employee/proto.local_request_EmployeeService_DeleteEmployee_0\n\tD:/GoCode/Employee/proto/employee.pb.gw.go:703\ngithub.com/sbbhagate/GoCode/Employee/proto.RegisterEmployeeServiceHandlerServer.func13\n\tD:/GoCode/Employee/proto/employee.pb.gw.go:1027\ngithub.com/grpc-ecosystem/grpc-gateway/v2/runtime.(*ServeMux).ServeHTTP\n\tC:/Users/suhas/go/pkg/mod/github.com/grpc-ecosystem/grpc-gateway/v2@v2.14.0/runtime/mux.go:388\nnet/http.(*ServeMux).ServeHTTP\n\tC:/Program Files/Go/src/net/http/server.go:2462\nnet/http.serverHandler.ServeHTTP\n\tC:/Program Files/Go/src/net/http/server.go:2916\nnet/http.(*conn).serve\n\tC:/Program Files/Go/src/net/http/server.go:1966"}

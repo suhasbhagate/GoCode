@@ -12,7 +12,7 @@ import (
 
 func (s *Server) UpdateEmployee(ctx context.Context, in *pb.Employee) (*pb.UpdateEmployeeResponse, error) {
 	str := fmt.Sprintf("UpdateEmployee was invoked with %v\n", in)
-	sng.SngService.Debug(str)
+	sng.DebugLogger.Debug(ctx, str, data)
 
 	data := Emp{
 		EmpId:       in.EmpId,
@@ -32,7 +32,7 @@ func (s *Server) UpdateEmployee(ctx context.Context, in *pb.Employee) (*pb.Updat
 	)
 
 	if err != nil {
-		sng.SngService.Error("Could not update")
+		sng.ErrorLogger.Error(ctx,err,"Could not Update Record",data)
 		return nil, status.Errorf(
 			codes.Internal,
 			"Could not update",
@@ -40,7 +40,7 @@ func (s *Server) UpdateEmployee(ctx context.Context, in *pb.Employee) (*pb.Updat
 	}
 
 	if res.MatchedCount == 0 {
-		sng.SngService.Error("Cannot find Employee with given Id")
+		sng.ErrorLogger.Error(ctx,err,"Cannot find Employee with given Employee Id",data)
 		return nil, status.Errorf(
 			codes.NotFound,
 			"Cannot find Employee with given Id",

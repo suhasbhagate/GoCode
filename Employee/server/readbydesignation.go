@@ -12,13 +12,13 @@ import (
 
 func (s *Server) ReadEmployeeByDesignation(ctx context.Context, in *pb.EmployeeDesignation) (*pb.Employees, error) {
 	str := fmt.Sprintf("ReadEmployeeByDesignation is invoked with %v\n", in)
-	sng.SngService.Debug(str)
+	sng.DebugLogger.Debug(ctx, str, data)
 
 	pipeline, err := sng.MongoService.Collection.Aggregate(ctx, bson.A{
 		bson.D{{Key: "$match", Value: bson.D{{Key: "designation", Value: in.Designation}}}},
 	})
 	if err != nil {
-		sng.SngService.Fatal("Error while searching data")
+		sng.FatalLogger.Fatal(ctx,err,"Error while searching data",data)
 	}
 
 	defer pipeline.Close(ctx)
@@ -30,7 +30,7 @@ func (s *Server) ReadEmployeeByDesignation(ctx context.Context, in *pb.EmployeeD
 		err := pipeline.Decode(data)
 
 		if err != nil {
-			sng.SngService.Error("Error while retrieving data")
+			sng.ErrorLogger.Error(ctx,err,"Error while retrieving data",data)
 			return nil, status.Errorf(
 				codes.NotFound,
 				err.Error(),
@@ -39,7 +39,7 @@ func (s *Server) ReadEmployeeByDesignation(ctx context.Context, in *pb.EmployeeD
 		emplist.Emps = append(emplist.Emps, documentToEmployee(data))
 	}
 	if err := pipeline.Err(); err != nil {
-		sng.SngService.Error("Error while retrieving data")
+		sng.ErrorLogger.Error(ctx,err,"Error while retrieving data",data)
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 	return emplist, nil
