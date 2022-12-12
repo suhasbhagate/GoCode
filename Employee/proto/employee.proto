@@ -4,7 +4,7 @@ package proto;
 
 import "google/api/annotations.proto";
 
-option go_package = "example.com/gmgr/Employee/proto";
+option go_package = "github.com/sbbhagate/GoCode/Employee/proto";
 
 message EmployeeId{
 	int32 Empid = 1;
