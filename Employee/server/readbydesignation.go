@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 	pb "github.com/sbbhagate/GoCode/Employee/proto"
-	sng "github.com/sbbhagate/GoCode/Employee/singleton"
+	sng "github.com/sbbhagate/GoCode/Employee/logger"
+	empdb "github.com/sbbhagate/GoCode/Employee/db"
 	"go.mongodb.org/mongo-driver/bson"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -14,7 +15,7 @@ func (s *Server) ReadEmployeeByDesignation(ctx context.Context, in *pb.EmployeeD
 	str := fmt.Sprintf("ReadEmployeeByDesignation is invoked with %v\n", in)
 	sng.DebugLogger.Debug(ctx, str, data)
 
-	pipeline, err := sng.MongoService.Collection.Aggregate(ctx, bson.A{
+	pipeline, err := empdb.MongoService.Collection.Aggregate(ctx, bson.A{
 		bson.D{{Key: "$match", Value: bson.D{{Key: "designation", Value: in.Designation}}}},
 	})
 	if err != nil {

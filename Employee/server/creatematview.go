@@ -2,12 +2,13 @@ package main
 
 import (
 	"context"
-	sng "github.com/sbbhagate/GoCode/Employee/singleton"
+	sng "github.com/sbbhagate/GoCode/Employee/logger"
+	empdb "github.com/sbbhagate/GoCode/Employee/db"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
 func CreateMatView(ctx context.Context) {
-	pipeln, err := sng.MongoService.Collection.Aggregate(ctx,
+	pipeln, err := empdb.MongoService.Collection.Aggregate(ctx,
 		bson.A{
 			bson.D{
 				{Key: "$project",

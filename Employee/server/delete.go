@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"strconv"
 	pb "github.com/sbbhagate/GoCode/Employee/proto"
-	sng "github.com/sbbhagate/GoCode/Employee/singleton"
+	sng "github.com/sbbhagate/GoCode/Employee/logger"
+	empdb "github.com/sbbhagate/GoCode/Employee/db"
 	"go.mongodb.org/mongo-driver/bson"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -15,7 +16,7 @@ func (s *Server) DeleteEmployee(ctx context.Context, in *pb.EmployeeId) (*pb.Del
 	str := fmt.Sprintf("DeleteEmployee was invoked with %v\n", in)
 	sng.DebugLogger.Debug(ctx, str, data)
 
-	res, err := sng.MongoService.Collection.DeleteOne(
+	res, err := empdb.MongoService.Collection.DeleteOne(
 		ctx,
 		bson.M{"empid": in.Empid},
 	)
@@ -38,7 +39,7 @@ func (s *Server) DeleteEmployee(ctx context.Context, in *pb.EmployeeId) (*pb.Del
 		)
 	}
 
-	res1, err := sng.MongoService.MatView.DeleteOne(
+	res1, err := empdb.MongoService.MatView.DeleteOne(
 		ctx,
 		bson.M{"empid": strconv.Itoa(int(in.Empid))},
 	)

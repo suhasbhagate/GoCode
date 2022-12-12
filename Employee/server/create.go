@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 	pb "github.com/sbbhagate/GoCode/Employee/proto"
-	sng "github.com/sbbhagate/GoCode/Employee/singleton"
+	sng "github.com/sbbhagate/GoCode/Employee/logger"
+	empdb "github.com/sbbhagate/GoCode/Employee/db"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -27,7 +28,7 @@ func (s *Server) CreateEmployee(ctx context.Context, in *pb.Employee) (*pb.Emplo
 		Department: in.Department,
 	}
 	
-	res, err:= sng.MongoService.Collection.InsertOne(ctx, data)
+	res, err:= empdb.MongoService.Collection.InsertOne(ctx, data)
 
 	if err != nil{
 		sng.ErrorLogger.Error(ctx,err,"Error while inserting data",data)

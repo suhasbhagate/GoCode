@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 	pb "github.com/sbbhagate/GoCode/Employee/proto"
-	sng "github.com/sbbhagate/GoCode/Employee/singleton"
+	sng "github.com/sbbhagate/GoCode/Employee/logger"
+	empdb "github.com/sbbhagate/GoCode/Employee/db"
 	"go.mongodb.org/mongo-driver/bson"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -17,7 +18,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 	data := &Emp{}
 	filter := bson.M{"empid": in.EmpId}
 
-	res := sng.MongoService.Collection.FindOne(ctx, filter)
+	res := empdb.MongoService.Collection.FindOne(ctx, filter)
 
 	if err := res.Decode(data); err !=nil{
 		sng.ErrorLogger.Error(ctx,err,"Cannot find Record with the Employee ID provided",data)
@@ -99,7 +100,7 @@ func (s *Server) PatchEmployee(ctx context.Context, in *pb.Employee) (*pb.Update
 		Department:  dpt,
 	}
 
-	res1, err1 := sng.MongoService.Collection.UpdateOne(
+	res1, err1 := empdb.MongoService.Collection.UpdateOne(
 		ctx,
 		bson.M{"empid": in.EmpId},
 		bson.M{"$set": data1},

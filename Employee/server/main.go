@@ -8,7 +8,8 @@ import (
 	"os"
 	"github.com/joho/godotenv"
 	pb "github.com/sbbhagate/GoCode/Employee/proto"
-	sng "github.com/sbbhagate/GoCode/Employee/singleton"
+	sng "github.com/sbbhagate/GoCode/Employee/logger"
+	empdb "github.com/sbbhagate/GoCode/Employee/db"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 )
@@ -20,13 +21,6 @@ var data interface{}
 type Server struct {
 	pb.EmployeeServiceServer
 }
-
-// func init(){
-// 	err := godotenv.Load("local.env")
-//     if err != nil {
-//         sng.SngService.Fatal("Error loading .env file")
-//     }
-// }
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
@@ -47,9 +41,9 @@ func main() {
 	//defer sng.SngService.Sync()
 	
 	sng.DebugLogger.Debug(ctx, "Employee Service API Started", data)
-	sng.InitMongoDB(ctx)
+	empdb.InitMongoDB(ctx)
 
-	defer sng.MongoService.DisconnectMongoDB(ctx)
+	defer empdb.MongoService.DisconnectMongoDB(ctx)
 
 	RunGatewayServer(ctx)
 	//RunGRPCServer(ctx)

@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"strconv"
 	pb "github.com/sbbhagate/GoCode/Employee/proto"
-	sng "github.com/sbbhagate/GoCode/Employee/singleton"
+	sng "github.com/sbbhagate/GoCode/Employee/logger"
+	empdb "github.com/sbbhagate/GoCode/Employee/db"
 	"go.mongodb.org/mongo-driver/bson"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -16,7 +17,7 @@ func (s *Server) ReadEmployeeById(ctx context.Context, in *pb.EmployeeId) (*pb.E
 	str := fmt.Sprintf("ReadEmployeeById is invoked with %v\n", in)
 	sng.DebugLogger.Debug(ctx, str, data)
 
-	pipeline, err := sng.MongoService.MatView.Aggregate(ctx, 
+	pipeline, err := empdb.MongoService.MatView.Aggregate(ctx, 
 						bson.A{
 							bson.D{
 								{Key: "$search",

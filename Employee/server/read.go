@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"strconv"
 	pb "github.com/sbbhagate/GoCode/Employee/proto"
-	sng "github.com/sbbhagate/GoCode/Employee/singleton"
+	sng "github.com/sbbhagate/GoCode/Employee/logger"
+	empdb "github.com/sbbhagate/GoCode/Employee/db"
 	"go.mongodb.org/mongo-driver/bson"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -53,7 +54,7 @@ func (s *Server) ReadEmployee(ctx context.Context, in *pb.Employee) (*pb.Employe
 
 	ppln = append(ppln, bson.D{{Key: "$search",Value: bson.D{{Key: "index",Value: "EmployeeIndex"},{Key: "compound",Value: compound}}}})
 	
-	pipeline, err := sng.MongoService.MatView.Aggregate(ctx,ppln)
+	pipeline, err := empdb.MongoService.MatView.Aggregate(ctx,ppln)
 	if err != nil {
 		sng.FatalLogger.Fatal(ctx,err,"Error while searching data",data)
 	}
