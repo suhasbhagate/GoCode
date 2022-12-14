@@ -1,0 +1,626 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "employee.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "EmployeeService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/createemp": {
+      "post": {
+        "operationId": "EmployeeService_CreateEmployee",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoEmployeeId"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoEmployee"
+            }
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    },
+    "/v1/deleteemp/{Empid}": {
+      "delete": {
+        "operationId": "EmployeeService_DeleteEmployee",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoDeleteEmployeeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Empid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    },
+    "/v1/patchemp/{EmpId}": {
+      "patch": {
+        "operationId": "EmployeeService_PatchEmployee",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoUpdateEmployeeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "EmpId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "FirstName": {
+                  "type": "string"
+                },
+                "LastName": {
+                  "type": "string"
+                },
+                "DisplayName": {
+                  "type": "string"
+                },
+                "Age": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "Salary": {
+                  "type": "number",
+                  "format": "double"
+                },
+                "Designation": {
+                  "type": "string"
+                },
+                "Department": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    },
+    "/v1/reademp": {
+      "get": {
+        "operationId": "EmployeeService_ReadEmployee",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoEmployees"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "EmpId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "FirstName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "LastName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "DisplayName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Age",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Salary",
+            "in": "query",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "name": "Designation",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Department",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    },
+    "/v1/readempbyage/{Age}": {
+      "get": {
+        "operationId": "EmployeeService_ReadEmployeeByAge",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoEmployees"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Age",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    },
+    "/v1/readempbydepartment/{Department}": {
+      "get": {
+        "operationId": "EmployeeService_ReadEmployeeByDepartment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoEmployees"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Department",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    },
+    "/v1/readempbydesignation/{Designation}": {
+      "get": {
+        "operationId": "EmployeeService_ReadEmployeeByDesignation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoEmployees"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Designation",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    },
+    "/v1/readempbydisplayname/{DisplayName}": {
+      "get": {
+        "operationId": "EmployeeService_ReadEmployeeByDisplayName",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoEmployees"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "DisplayName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    },
+    "/v1/readempbyfirstname/{FirstName}": {
+      "get": {
+        "operationId": "EmployeeService_ReadEmployeeByFirstName",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoEmployees"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "FirstName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    },
+    "/v1/readempbyid/{Empid}": {
+      "get": {
+        "operationId": "EmployeeService_ReadEmployeeById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoEmployees"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Empid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    },
+    "/v1/readempbylastname/{LastName}": {
+      "get": {
+        "operationId": "EmployeeService_ReadEmployeeByLastName",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoEmployees"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "LastName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    },
+    "/v1/readempbysalary/{Salary}": {
+      "get": {
+        "operationId": "EmployeeService_ReadEmployeeBySalary",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoEmployees"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Salary",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double"
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    },
+    "/v1/updateemp/{EmpId}": {
+      "put": {
+        "operationId": "EmployeeService_UpdateEmployee",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoUpdateEmployeeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "EmpId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "FirstName": {
+                  "type": "string"
+                },
+                "LastName": {
+                  "type": "string"
+                },
+                "DisplayName": {
+                  "type": "string"
+                },
+                "Age": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "Salary": {
+                  "type": "number",
+                  "format": "double"
+                },
+                "Designation": {
+                  "type": "string"
+                },
+                "Department": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protoDeleteEmployeeResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "protoEmployee": {
+      "type": "object",
+      "properties": {
+        "EmpId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "FirstName": {
+          "type": "string"
+        },
+        "LastName": {
+          "type": "string"
+        },
+        "DisplayName": {
+          "type": "string"
+        },
+        "Age": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Salary": {
+          "type": "number",
+          "format": "double"
+        },
+        "Designation": {
+          "type": "string"
+        },
+        "Department": {
+          "type": "string"
+        }
+      }
+    },
+    "protoEmployeeId": {
+      "type": "object",
+      "properties": {
+        "Empid": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "protoEmployees": {
+      "type": "object",
+      "properties": {
+        "emps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protoEmployee"
+          }
+        }
+      }
+    },
+    "protoUpdateEmployeeResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

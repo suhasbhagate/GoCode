@@ -1,4 +1,4 @@
-.xlsx
+*.xlsx
 .env
-.docx
-.txt
+*.docx
+*.txt
