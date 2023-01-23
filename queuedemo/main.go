@@ -2,7 +2,7 @@ package main
 
 import(
 	"fmt"
-	"example.com/demo/queuedemo/queue"
+	"github.com/suhasbhagate/GoCode/queuedemo/queue"
 )
 
 func main(){
