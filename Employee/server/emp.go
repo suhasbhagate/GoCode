@@ -2,7 +2,7 @@ package main
 
 import (
 	"strconv"
-	pb "github.com/sbbhagate/GoCode/Employee/proto"
+	pb "github.com/suhasbhagate/GoCode/Employee/proto"
 )
 
 type Emp struct {

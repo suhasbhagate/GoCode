@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"os"
 	"github.com/joho/godotenv"
-	pb "github.com/sbbhagate/GoCode/Employee/proto"
-	sng "github.com/sbbhagate/GoCode/Employee/logger"
-	empdb "github.com/sbbhagate/GoCode/Employee/db"
+	pb "github.com/suhasbhagate/GoCode/Employee/proto"
+	sng "github.com/suhasbhagate/GoCode/Employee/logger"
+	empdb "github.com/suhasbhagate/GoCode/Employee/db"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 )

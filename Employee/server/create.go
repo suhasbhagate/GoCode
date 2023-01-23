@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	pb "github.com/sbbhagate/GoCode/Employee/proto"
-	sng "github.com/sbbhagate/GoCode/Employee/logger"
-	empdb "github.com/sbbhagate/GoCode/Employee/db"
+	pb "github.com/suhasbhagate/GoCode/Employee/proto"
+	sng "github.com/suhasbhagate/GoCode/Employee/logger"
+	empdb "github.com/suhasbhagate/GoCode/Employee/db"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

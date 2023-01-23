@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	sng "github.com/sbbhagate/GoCode/Employee/logger"
-	empdb "github.com/sbbhagate/GoCode/Employee/db"
+	sng "github.com/suhasbhagate/GoCode/Employee/logger"
+	empdb "github.com/suhasbhagate/GoCode/Employee/db"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
