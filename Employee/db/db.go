@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	sng "github.com/sbbhagate/GoCode/Employee/logger"
+	sng "github.com/suhasbhagate/GoCode/Employee/logger"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"

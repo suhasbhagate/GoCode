@@ -42,7 +42,6 @@ func main(){
 	r.HandleFunc("/user/{id}",deleteOneUser).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":4000",r))
-
 }
 
 func ServeHome(w http.ResponseWriter , r *http.Request){

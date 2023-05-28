@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-    for i := 0; i < 100; i++ {
+    for i := 0; i < 10; i++ {
         go getInstance()
     }
     // Scanln is similar to Scan, but stops scanning at a newline and

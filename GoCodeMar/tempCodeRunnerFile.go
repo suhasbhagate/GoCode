@@ -1,0 +1,2 @@
+
+	if nums[mid]==key{
